@@ -1,0 +1,29 @@
+version: '3.7'
+
+services:
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile-prod
+    volumes:
+      - './api:/usr/src/app'
+    ports:
+      - 5000
+    environment:
+      - FLASK_ENV=production
+      - APP_SETTINGS=project.config.ProductionConfig
+      - DATABASE_URL=postgres://postgres:postgres@managertools-db:5432/manager_tools_prod
+      - DATABASE_TEST_URL=postgres://postgres:postgres@managertools-db:5432/manager_tools_test
+      - SECRET_KEY=0Blx9bJjRCLTuz
+    depends_on:
+      - managertools-db
+
+  managertools-db:
+    build:
+      context: ./api/project/db
+      dockerfile: Dockerfile
+    ports:
+      - 5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
