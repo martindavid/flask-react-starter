@@ -4,7 +4,7 @@ services:
   api:
     build:
       context: ./api
-      dockerfile: Dockerfile-dev
+      dockerfile: Dockerfile
     volumes:
       - './api:/usr/src/app'
     ports:
@@ -12,13 +12,13 @@ services:
     environment:
       - FLASK_ENV=development
       - APP_SETTINGS=project.config.DevelopmentConfig
-      - DATABASE_URL=postgres://postgres:postgres@managertools-db:5432/manager_tools_dev
-      - DATABASE_TEST_URL=postgres://postgres:postgres@managertools-db:5432/manager_tools_test
+      - DATABASE_URL=postgres://postgres:postgres@managertools-db:5432/db_dev
+      - DATABASE_TEST_URL=postgres://postgres:postgres@managertools-db:5432/db_test
       - SECRET_KEY=ZQbn05PDeA7v11
     depends_on:
-      - managertools-db
+      - database
 
-  managertools-db:
+  database:
     build:
       context: ./api/project/db
       dockerfile: Dockerfile
